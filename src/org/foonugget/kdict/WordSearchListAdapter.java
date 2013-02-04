@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import org.foonugget.kdict.R.string;
@@ -24,9 +23,6 @@ public class WordSearchListAdapter extends BaseAdapter {
     @SuppressWarnings("unused")
     private final static String TAG = WordSearchListAdapter.class
             .getSimpleName();
-
-    @Inject
-    protected static Provider<Context> contextProvider;
 
     private final Context mContext;
 
