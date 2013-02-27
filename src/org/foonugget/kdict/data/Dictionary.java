@@ -57,28 +57,32 @@ public class Dictionary {
 
     public List<WordMatch> findKoreanByEnglishFuzzy(String word) {
         final String SQL = "SELECT word, definition FROM english_korean WHERE word LIKE '%"
-                + word + "%'";
+                + escapeString(word) + "%'";
         return getWordMatches(SQL);
     }
 
     public List<WordMatch> findEnglishByKoreanFuzzy(String word) {
         final String SQL = "SELECT word, definition FROM korean_english WHERE word LIKE '%"
-                + word + "%'";
+                + escapeString(word) + "%'";
         return getWordMatches(SQL);
     }
 
     public List<WordMatch> findKoreanByEnglishExact(String word) {
         final String SQL = "SELECT word, definition FROM english_korean WHERE word = '"
-                + word + "'";
+                + escapeString(word) + "'";
         return getWordMatches(SQL);
     }
 
     public List<WordMatch> findEnglishByKoreanExact(String word) {
         final String SQL = "SELECT word, definition FROM korean_english WHERE word = '"
-                + word + "'";
+                + escapeString(word) + "'";
         return getWordMatches(SQL);
     }
 
+    protected String escapeString(String string) {
+        return string.replaceAll("'", "''");
+    }
+    
     private List<WordMatch> getWordMatches(final String SQL) {
         List<WordMatch> matches = new ArrayList<WordMatch>(0);
 
