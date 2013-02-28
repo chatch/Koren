@@ -1,0 +1,15 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE words (word TEXT, definition BLOB, word_type NUMERIC, entry_type NUMERIC);
+CREATE TABLE entry_type (id INTEGER PRIMARY KEY, type TEXT);
+INSERT INTO "entry_type" VALUES(1,'ENGLISH_TO_KOREAN');
+INSERT INTO "entry_type" VALUES(2,'KOREAN_TO_ENGLISH');
+CREATE TABLE word_type (id INTEGER PRIMARY KEY, type TEXT);
+INSERT INTO "word_type" VALUES(1,'noun');
+INSERT INTO "word_type" VALUES(3,'adverb');
+INSERT INTO "word_type" VALUES(4,'adjective');
+INSERT INTO "word_type" VALUES(5,'pronoun');
+INSERT INTO "word_type" VALUES(6,'verb tense');
+INSERT INTO "word_type" VALUES(7,'verb iiii?');
+INSERT INTO "word_type" VALUES(8,'x');
+COMMIT;
