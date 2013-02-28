@@ -29,7 +29,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private final static String TAG = DatabaseOpenHelper.class.getSimpleName();
 
-    private final static int DB_VERSION = 1;
+    private final static int DB_VERSION = 2;
     private final static String PREFS_DB_VERSION_KEY = "DB_VERSION";
 
     private final static String APP_PKG_NAME = DatabaseOpenHelper.class
@@ -145,7 +145,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // do nothing
+        if (oldVersion < DB_VERSION) {
+            mDB.execSQL("CREATE TABLE search_history (id INTEGER PRIMARY KEY, search_string TEXT)");
+        }
     }
 
 }

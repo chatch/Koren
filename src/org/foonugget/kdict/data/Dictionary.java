@@ -23,6 +23,7 @@ public class Dictionary {
 
     public List<WordMatch> wordSearch(String word) {
         word = word.trim();
+        addSearchWordToHistory(word);
 
         ArrayList<WordMatch> matches = new ArrayList<WordMatch>();
         matches.addAll(findKoreanByEnglishExact(word));
@@ -33,6 +34,7 @@ public class Dictionary {
 
     public List<WordMatch> wordSearchEach(String word) {
         word = word.trim();
+        addSearchWordToHistory(word);
 
         ArrayList<WordMatch> matches = new ArrayList<WordMatch>();
 
@@ -47,6 +49,7 @@ public class Dictionary {
 
     public List<WordMatch> wordSearchContains(String word) {
         word = word.trim();
+        addSearchWordToHistory(word);
 
         ArrayList<WordMatch> matches = new ArrayList<WordMatch>();
         matches.addAll(findKoreanByEnglishFuzzy(word));
@@ -83,6 +86,11 @@ public class Dictionary {
         return string.replaceAll("'", "''");
     }
     
+    private void addSearchWordToHistory(String word) {
+        final String SQL = "INSERT INTO search_history VALUES ((SELECT MAX(id)+1 FROM search_history), '" + escapeString(word) + "')";
+        mDB.execSQL(SQL);
+    }
+
     private List<WordMatch> getWordMatches(final String SQL) {
         List<WordMatch> matches = new ArrayList<WordMatch>(0);
 
