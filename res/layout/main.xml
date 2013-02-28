@@ -49,7 +49,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/matchesList"
+        android:id="@+id/wordList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

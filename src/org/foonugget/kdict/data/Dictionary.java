@@ -1,29 +1,32 @@
 
 package org.foonugget.kdict.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.foonugget.kdict.Util;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Singleton
 public class Dictionary {
 
     @SuppressWarnings("unused")
     private final static String TAG = Dictionary.class.getSimpleName();
 
-    private SQLiteDatabase mDB;
+    @Inject @Named("DictDB")
+    private SQLiteDatabase mDictDB;
 
     @Inject
-    public Dictionary(DatabaseOpenHelper helper) {
-        mDB = helper.openDatabase();
-    }
-
+    private SearchHistory mSearchHistory;
+    
     public List<WordMatch> wordSearch(String word) {
         word = word.trim();
-        addSearchWordToHistory(word);
 
         ArrayList<WordMatch> matches = new ArrayList<WordMatch>();
         matches.addAll(findKoreanByEnglishExact(word));
@@ -34,7 +37,6 @@ public class Dictionary {
 
     public List<WordMatch> wordSearchEach(String word) {
         word = word.trim();
-        addSearchWordToHistory(word);
 
         ArrayList<WordMatch> matches = new ArrayList<WordMatch>();
 
@@ -49,7 +51,6 @@ public class Dictionary {
 
     public List<WordMatch> wordSearchContains(String word) {
         word = word.trim();
-        addSearchWordToHistory(word);
 
         ArrayList<WordMatch> matches = new ArrayList<WordMatch>();
         matches.addAll(findKoreanByEnglishFuzzy(word));
@@ -60,35 +61,26 @@ public class Dictionary {
 
     public List<WordMatch> findKoreanByEnglishFuzzy(String word) {
         final String SQL = "SELECT word, definition FROM english_korean WHERE word LIKE '%"
-                + escapeString(word) + "%'";
+                + Util.escapeDatabaseStringLiteral(word) + "%'";
         return getWordMatches(SQL);
     }
 
     public List<WordMatch> findEnglishByKoreanFuzzy(String word) {
         final String SQL = "SELECT word, definition FROM korean_english WHERE word LIKE '%"
-                + escapeString(word) + "%'";
+                + Util.escapeDatabaseStringLiteral(word) + "%'";
         return getWordMatches(SQL);
     }
 
     public List<WordMatch> findKoreanByEnglishExact(String word) {
         final String SQL = "SELECT word, definition FROM english_korean WHERE word = '"
-                + escapeString(word) + "'";
+                + Util.escapeDatabaseStringLiteral(word) + "'";
         return getWordMatches(SQL);
     }
 
     public List<WordMatch> findEnglishByKoreanExact(String word) {
         final String SQL = "SELECT word, definition FROM korean_english WHERE word = '"
-                + escapeString(word) + "'";
+                + Util.escapeDatabaseStringLiteral(word) + "'";
         return getWordMatches(SQL);
-    }
-
-    protected String escapeString(String string) {
-        return string.replaceAll("'", "''");
-    }
-    
-    private void addSearchWordToHistory(String word) {
-        final String SQL = "INSERT INTO search_history VALUES ((SELECT MAX(id)+1 FROM search_history), '" + escapeString(word) + "')";
-        mDB.execSQL(SQL);
     }
 
     private List<WordMatch> getWordMatches(final String SQL) {
@@ -96,7 +88,7 @@ public class Dictionary {
 
         Cursor cursor = null;
         try {
-            cursor = mDB.rawQuery(SQL, null);
+            cursor = mDictDB.rawQuery(SQL, null);
             if (cursor.moveToFirst() == false) {
                 cursor.close();
                 return matches;

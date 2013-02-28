@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:allowBackup="true" >
         <activity
-            android:name=".KoreanDictionaryActivity"
+            android:name="org.foonugget.kdict.ui.KoreanDictionaryActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TranslationsActivity" />
+        <activity android:name="org.foonugget.kdict.ui.TranslationsActivity" />
     </application>
 
 </manifest>

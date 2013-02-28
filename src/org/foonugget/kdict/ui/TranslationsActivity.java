@@ -1,5 +1,5 @@
 
-package org.foonugget.kdict;
+package org.foonugget.kdict.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +8,13 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 
-import org.foonugget.kdict.WordSearchListAdapter.Factory;
+import org.foonugget.kdict.R;
+import org.foonugget.kdict.R.id;
+import org.foonugget.kdict.R.layout;
+import org.foonugget.kdict.R.string;
 import org.foonugget.kdict.data.Dictionary;
 import org.foonugget.kdict.data.WordMatch;
+import org.foonugget.kdict.ui.WordSearchListAdapter.Factory;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectResource;

@@ -1,5 +1,5 @@
 
-package org.foonugget.kdict;
+package org.foonugget.kdict.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import org.foonugget.kdict.R;
+import org.foonugget.kdict.R.id;
+import org.foonugget.kdict.R.layout;
 import org.foonugget.kdict.R.string;
 import org.foonugget.kdict.data.WordMatch;
 
@@ -26,7 +29,8 @@ public class WordSearchListAdapter extends BaseAdapter {
 
     private final Context mContext;
 
-    private final LayoutInflater mInflater;
+    @Inject
+    private LayoutInflater mInflater;
 
     private List<WordMatch> mMatches;
 
@@ -42,8 +46,6 @@ public class WordSearchListAdapter extends BaseAdapter {
     List<WordMatch> matchesList) {
         mContext = context;
         mMatches = matchesList;
-        mInflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (mMatches == null || mMatches.size() == 0) {
             WordMatch noMatch = new WordMatch("No matches", "");
