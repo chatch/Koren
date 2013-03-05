@@ -14,8 +14,10 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.inject.Inject;
 
@@ -57,9 +59,19 @@ public class KoreanDictionaryActivity extends RoboActivity {
         populateSearchHistory();
     }
 
+    private final OnClickListener onClickSearchHistoryEntry = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String searchText = (String) ((TextView) v).getText();
+            doSearch(SearchType.Exact, searchText);
+            mSearchTextField.setText(searchText);
+        }
+    };
+
     private void populateSearchHistory() {
         List<String> searchList = mSearchHistory.getSearchHistoryAll();
-        SearchHistoryListAdapter adapter = searchHistoryListAdapterFactory.create(searchList);
+        SearchHistoryListAdapter adapter = searchHistoryListAdapterFactory.create(searchList,
+                onClickSearchHistoryEntry);
         mWordListView.setAdapter(adapter);
     }
 
@@ -75,19 +87,22 @@ public class KoreanDictionaryActivity extends RoboActivity {
         doSearch(SearchType.Exact);
     }
 
-    private void doSearch(SearchType type) {
-        String word = mSearchTextField.getText().toString();
+    public void doSearch(SearchType type) {
+        String searchText = mSearchTextField.getText().toString();
+        doSearch(type, searchText);
+    }
 
+    private void doSearch(SearchType type, String searchText) {
         List<WordMatch> matchesList;
         switch (type) {
             case Contains:
-                matchesList = mDict.wordSearchContains(word);
+                matchesList = mDict.wordSearchContains(searchText);
                 break;
             case Each:
-                matchesList = mDict.wordSearchEach(word);
+                matchesList = mDict.wordSearchEach(searchText);
                 break;
             case Exact:
-                matchesList = mDict.wordSearch(word);
+                matchesList = mDict.wordSearch(searchText);
                 break;
             default:
                 matchesList = new ArrayList<WordMatch>();
@@ -95,7 +110,7 @@ public class KoreanDictionaryActivity extends RoboActivity {
 
         WordSearchListAdapter adapter = wordSearchListAdapterFactory.create(matchesList);
         mWordListView.setAdapter(adapter);
-        mSearchHistory.addSearchWordToHistory(word);
+        mSearchHistory.addSearchWordToHistory(searchText);
     }
 
 }
