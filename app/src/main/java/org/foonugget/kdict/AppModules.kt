@@ -1,5 +1,6 @@
 package org.foonugget.kdict
 
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
@@ -9,15 +10,16 @@ val appModule = module {
             android.content.Context.MODE_PRIVATE
         )
     }
-    factory { org.foonugget.kdict.ui.WordSearchListAdapter.Factory(get()) }
+    single { org.foonugget.kdict.tts.TtsManager(get()) }
+    factory { org.foonugget.kdict.ui.WordSearchListAdapter.Factory(get(), get()) }
     factory { org.foonugget.kdict.ui.SearchHistoryListAdapter.Factory(get()) }
 }
 
 val dataModule = module {
     single { org.foonugget.kdict.data.AppDatabaseOpenHelper(get()) }
     single { org.foonugget.kdict.data.DictionaryDatabaseOpenHelper(get()) }
-    single { get<org.foonugget.kdict.data.AppDatabaseOpenHelper>().writableDatabase }
-    single { get<org.foonugget.kdict.data.DictionaryDatabaseOpenHelper>().openDatabase() }
-    single { org.foonugget.kdict.data.Dictionary(get()) }
-    single { org.foonugget.kdict.data.SearchHistory(get()) }
+    single(named("appDB")) { get<org.foonugget.kdict.data.AppDatabaseOpenHelper>().writableDatabase }
+    single(named("dictDB")) { get<org.foonugget.kdict.data.DictionaryDatabaseOpenHelper>().openDatabase() }
+    single { org.foonugget.kdict.data.Dictionary(get(named("dictDB"))) }
+    single { org.foonugget.kdict.data.SearchHistory(get(named("appDB"))) }
 }

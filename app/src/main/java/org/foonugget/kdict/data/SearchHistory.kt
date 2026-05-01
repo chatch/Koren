@@ -9,7 +9,11 @@ class SearchHistory(private val mDB: SQLiteDatabase) {
     fun addSearchWordToHistory(word: String) {
         if (!tableExists()) {
             Log.w("SearchHistory", "search_history table missing, creating it")
-            mDB.execSQL("CREATE TABLE search_history (id INTEGER PRIMARY KEY, search_string TEXT)")
+            mDB.execSQL("CREATE TABLE search_history (id INTEGER PRIMARY KEY, search_string TEXT UNIQUE)")
+        }
+        if (exists(word)) {
+            Log.d("SearchHistory", "Search word already in history, skipping: $word")
+            return
         }
         val values = ContentValues().apply {
             put("id", getNextId())
@@ -18,6 +22,15 @@ class SearchHistory(private val mDB: SQLiteDatabase) {
         val result = mDB.insert("search_history", null, values)
         if (result == -1L) {
             Log.e("SearchHistory", "Failed to insert search word: $word")
+        }
+    }
+
+    private fun exists(word: String): Boolean {
+        mDB.rawQuery(
+            "SELECT 1 FROM search_history WHERE search_string = ? LIMIT 1",
+            arrayOf(word)
+        ).use { cursor ->
+            return cursor.moveToFirst()
         }
     }
 
@@ -42,6 +55,7 @@ class SearchHistory(private val mDB: SQLiteDatabase) {
     }
 
     fun getSearchHistoryAll(): List<String> {
+        if (!tableExists()) return emptyList()
         val searches = mutableListOf<String>()
         mDB.rawQuery(
             "SELECT search_string FROM search_history ORDER BY id DESC",

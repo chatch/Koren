@@ -5,16 +5,56 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/matchWord"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="30sp" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical" >
 
-    <TextView
-        android:id="@+id/matchDefinition"
+        <TextView
+            android:id="@+id/matchWord"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/speakWordBtn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_volume_up"
+            android:contentDescription="@string/tts_speak_word"
+            android:background="#FF666666"
+            android:padding="4dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="15sp" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/matchDefinition"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp" />
+
+        <ImageButton
+            android:id="@+id/speakDefBtn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_volume_up"
+            android:contentDescription="@string/tts_speak_definition"
+            android:background="#FF666666"
+            android:padding="4dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

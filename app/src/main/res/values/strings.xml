@@ -8,5 +8,10 @@
     <string name="exactButtonLabel">Exact</string>
     <string name="eachButtonLabel">Each</string>
     <string name="containsButtonLabel">Contains</string>
+
+    <string name="tts_not_available">Text-to-speech is not available. Please enable a TTS engine in your device settings.</string>
+    <string name="tts_language_not_available">%s voice is not installed. Please install it in your device TTS settings.</string>
+    <string name="tts_speak_word">Speak word</string>
+    <string name="tts_speak_definition">Speak definition</string>
     
 </resources>

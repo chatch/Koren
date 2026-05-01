@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.foonugget.kdict.R
 import org.foonugget.kdict.data.WordMatch
+import org.foonugget.kdict.tts.TtsManager
 
 class WordSearchListAdapter(
     private val context: Context,
-    private val matchesList: List<WordMatch>
+    private val matchesList: List<WordMatch>,
+    private val ttsManager: TtsManager
 ) : BaseAdapter() {
 
     override fun getCount(): Int = matchesList.size
@@ -32,6 +35,16 @@ class WordSearchListAdapter(
         val defTv = matchView.findViewById<TextView>(R.id.matchDefinition)
         defTv.text = match.translation
 
+        val speakWordBtn = matchView.findViewById<ImageButton>(R.id.speakWordBtn)
+        speakWordBtn.setOnClickListener {
+            ttsManager.speak(match.word)
+        }
+
+        val speakDefBtn = matchView.findViewById<ImageButton>(R.id.speakDefBtn)
+        speakDefBtn.setOnClickListener {
+            ttsManager.speak(match.translation)
+        }
+
         matchView.setOnClickListener {
             val intent = android.content.Intent(context, TranslationsActivity::class.java)
             intent.putExtra(context.getString(R.string.intentVarWord), match.word)
@@ -42,9 +55,9 @@ class WordSearchListAdapter(
         return matchView
     }
 
-    class Factory(private val context: Context) {
+    class Factory(private val context: Context, private val ttsManager: TtsManager) {
         fun create(matchesList: List<WordMatch>): WordSearchListAdapter {
-            return WordSearchListAdapter(context, matchesList)
+            return WordSearchListAdapter(context, matchesList, ttsManager)
         }
     }
 }
