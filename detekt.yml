@@ -1,0 +1,38 @@
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+
+comments:
+  active: true
+
+complexity:
+  active: true
+  LongMethod:
+    active: true
+    threshold: 60
+  LargeClass:
+    active: true
+    threshold: 600
+
+empty-blocks:
+  active: true
+
+exceptions:
+  active: true
+
+naming:
+  active: true
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+
+style:
+  active: true
+  ReturnCount:
+    active: true
+    max: 2
